@@ -26,53 +26,44 @@ interface PalindromeStrategy {
     boolean isValid(String input);
 }
 
-class StackStrategy implements PalindromeStrategy {
+class RecursiveStrategy implements PalindromeStrategy {
     public boolean isValid(String input) {
         String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-        for (char c : clean.toCharArray()) {
-            stack.push(c);
-        }
-        for (char c : clean.toCharArray()) {
-            if (c != stack.pop()) return false;
-        }
-        return true;
+        return check(clean, 0, clean.length() - 1);
+    }
+    private boolean check(String s, int start, int end) {
+        if (start >= end) return true;
+        if (s.charAt(start) != s.charAt(end)) return false;
+        return check(s, start + 1, end - 1);
     }
 }
 
-class DequeStrategy implements PalindromeStrategy {
+class IterativeStrategy implements PalindromeStrategy {
     public boolean isValid(String input) {
         String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Deque<Character> deque = new LinkedList<>();
-        for (char c : clean.toCharArray()) {
-            deque.addLast(c);
-        }
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) return false;
+        int s = 0, e = clean.length() - 1;
+        while (s < e) {
+            if (clean.charAt(s++) != clean.charAt(e--)) return false;
         }
         return true;
     }
 }
 
 public class PalindromeCheckerApp {
-    private PalindromeStrategy strategy;
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String text) {
-        return strategy.isValid(text);
-    }
-
     public static void main(String[] args) {
-        PalindromeCheckerApp app = new PalindromeCheckerApp();
-        String test = "Race Car";
+        String largeInput = "A".repeat(1000) + "B" + "A".repeat(1000);
 
-        app.setStrategy(new StackStrategy());
-        System.out.println(app.check(test));
+        compare(new RecursiveStrategy(), "Recursive", largeInput);
+        compare(new IterativeStrategy(), "Iterative", largeInput);
+    }
 
-        app.setStrategy(new DequeStrategy());
-        System.out.println(app.check(test));
+    private static void compare(PalindromeStrategy strategy, String name, String input) {
+        long start = System.nanoTime();
+        boolean result = strategy.isValid(input);
+        long end = System.nanoTime();
+
+        System.out.println(name + " Strategy:");
+        System.out.println("Result: " + result);
+        System.out.println("Execution Time: " + (end - start) + " ns\n");
     }
 }
