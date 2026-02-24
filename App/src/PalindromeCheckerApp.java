@@ -20,33 +20,59 @@
  * @version 1.0
  */
 
+import java.util.*;
+
+interface PalindromeStrategy {
+    boolean isValid(String input);
+}
+
+class StackStrategy implements PalindromeStrategy {
+    public boolean isValid(String input) {
+        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
+        for (char c : clean.toCharArray()) {
+            stack.push(c);
+        }
+        for (char c : clean.toCharArray()) {
+            if (c != stack.pop()) return false;
+        }
+        return true;
+    }
+}
+
+class DequeStrategy implements PalindromeStrategy {
+    public boolean isValid(String input) {
+        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        Deque<Character> deque = new LinkedList<>();
+        for (char c : clean.toCharArray()) {
+            deque.addLast(c);
+        }
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) return false;
+        }
+        return true;
+    }
+}
+
 public class PalindromeCheckerApp {
-    private String normalize(String input) {
-        return input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    private PalindromeStrategy strategy;
+
+    public void setStrategy(PalindromeStrategy strategy) {
+        this.strategy = strategy;
     }
 
-    private boolean isRecursivePalindrome(String str, int start, int end) {
-        if (start >= end) {
-            return true;
-        }
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-        return isRecursivePalindrome(str, start + 1, end - 1);
-    }
-
-    public boolean checkPalindrome(String input) {
-        if (input == null) {
-            return false;
-        }
-        String clean = normalize(input);
-        return isRecursivePalindrome(clean, 0, clean.length() - 1);
+    public boolean check(String text) {
+        return strategy.isValid(text);
     }
 
     public static void main(String[] args) {
-        PalindromeCheckerApp service = new PalindromeCheckerApp();
+        PalindromeCheckerApp app = new PalindromeCheckerApp();
+        String test = "Race Car";
 
-        System.out.println(service.checkPalindrome("Was it a car or a cat I saw?"));
-        System.out.println(service.checkPalindrome("Hello World"));
+        app.setStrategy(new StackStrategy());
+        System.out.println(app.check(test));
+
+        app.setStrategy(new DequeStrategy());
+        System.out.println(app.check(test));
     }
-}}
+}
