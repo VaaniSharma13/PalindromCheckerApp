@@ -21,21 +21,32 @@
  */
 
 public class PalindromeCheckerApp {
-    public static boolean check(String str, int s, int e) {
-        if (s >= e) {
+    private String normalize(String input) {
+        return input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    }
+
+    private boolean isRecursivePalindrome(String str, int start, int end) {
+        if (start >= end) {
             return true;
         }
-        if (str.charAt(s) != str.charAt(e)) {
+        if (str.charAt(start) != str.charAt(end)) {
             return false;
         }
-        return check(str, s + 1, e - 1);
+        return isRecursivePalindrome(str, start + 1, end - 1);
+    }
+
+    public boolean checkPalindrome(String input) {
+        if (input == null) {
+            return false;
+        }
+        String clean = normalize(input);
+        return isRecursivePalindrome(clean, 0, clean.length() - 1);
     }
 
     public static void main(String[] args) {
-        String input = "A man, a plan, a canal: Panama";
-        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        PalindromeCheckerApp service = new PalindromeCheckerApp();
 
-        boolean result = check(clean, 0, clean.length() - 1);
-        System.out.println(result);
+        System.out.println(service.checkPalindrome("Was it a car or a cat I saw?"));
+        System.out.println(service.checkPalindrome("Hello World"));
     }
 }}
