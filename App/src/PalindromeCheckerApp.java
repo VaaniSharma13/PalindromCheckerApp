@@ -20,31 +20,27 @@
  * @version 1.0
  */
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "level";
-        boolean result = compareStructures(input);
+        String input = "radar";
+        boolean result = checkPalindrome(input);
         System.out.println(result);
     }
 
-    public static boolean compareStructures(String str) {
+    public static boolean checkPalindrome(String str) {
         if (str == null) return false;
 
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
+        Deque<Character> deque = new ArrayDeque<>();
 
         for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            stack.push(c);
-            queue.add(c);
+            deque.addLast(str.charAt(i));
         }
 
-        while (!stack.isEmpty()) {
-            if (!stack.pop().equals(queue.remove())) {
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
                 return false;
             }
         }
