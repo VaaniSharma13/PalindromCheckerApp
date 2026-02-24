@@ -20,26 +20,31 @@
  * @version 1.0
  */
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "madam";
-        boolean result = isPalindrome(input);
+        String input = "level";
+        boolean result = compareStructures(input);
         System.out.println(result);
     }
 
-    public static boolean isPalindrome(String str) {
+    public static boolean compareStructures(String str) {
         if (str == null) return false;
 
         Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
 
         for (int i = 0; i < str.length(); i++) {
-            stack.push(str.charAt(i));
+            char c = str.charAt(i);
+            stack.push(c);
+            queue.add(c);
         }
 
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) != stack.pop()) {
+        while (!stack.isEmpty()) {
+            if (!stack.pop().equals(queue.remove())) {
                 return false;
             }
         }
