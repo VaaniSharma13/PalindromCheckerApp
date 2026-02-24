@@ -27,52 +27,25 @@ class Node {
 }
 
 public class PalindromeCheckerApp {
-    public static void main(String[] args) {
-        String input = "radar";
-        Node head = createList(input);
-        System.out.println(isPalindrome(head));
-    }
-
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) return true;
-
-        Node slow = head;
-        Node fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node secondHalf = reverse(slow);
-        Node firstHalf = head;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) return false;
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
+    public static boolean isPalindrome(String str, int start, int end) {
+        if (start >= end) {
+            return true;
         }
         return true;
     }
 
-    private static Node reverse(Node head) {
-        Node prev = null;
-        Node curr = head;
-        while (curr != null) {
-            Node next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
         }
         return prev;
     }
 
-    private static Node createList(String s) {
-        Node dummy = new Node(' ');
-        Node temp = dummy;
-        for (char c : s.toCharArray()) {
-            temp.next = new Node(c);
-            temp = temp.next;
-        }
-        return dummy.next;
+        return isPalindrome(str, start + 1, end - 1);
+    }
+
+    public static void main(String[] args) {
+        String input = "racecar";
+        boolean result = isPalindrome(input, 0, input.length() - 1);
+        System.out.println(result);
     }
 }
