@@ -20,32 +20,22 @@
  * @version 1.0
  */
 
-class Node {
-    char data;
-    Node next;
-    Node(char data) { this.data = data; }
-}
-
 public class PalindromeCheckerApp {
-    public static boolean isPalindrome(String str, int start, int end) {
-        if (start >= end) {
+    public static boolean check(String str, int s, int e) {
+        if (s >= e) {
             return true;
         }
-        return true;
-    }
-
-        if (str.charAt(start) != str.charAt(end)) {
+        if (str.charAt(s) != str.charAt(e)) {
             return false;
         }
-        return prev;
-    }
-
-        return isPalindrome(str, start + 1, end - 1);
+        return check(str, s + 1, e - 1);
     }
 
     public static void main(String[] args) {
-        String input = "racecar";
-        boolean result = isPalindrome(input, 0, input.length() - 1);
+        String input = "A man, a plan, a canal: Panama";
+        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        boolean result = check(clean, 0, clean.length() - 1);
         System.out.println(result);
     }
-}
+}}
