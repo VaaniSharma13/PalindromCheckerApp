@@ -20,18 +20,25 @@
  * @version 1.0
  */
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+class Node {
+    char data;
+    Node next;
+    Node(char data) { this.data = data; }
+}
 
 public class PalindromeCheckerApp {
     public static boolean isPalindrome(String str, int start, int end) {
         if (start >= end) {
             return true;
         }
+        return true;
+    }
 
         if (str.charAt(start) != str.charAt(end)) {
             return false;
         }
+        return prev;
+    }
 
         return isPalindrome(str, start + 1, end - 1);
     }
