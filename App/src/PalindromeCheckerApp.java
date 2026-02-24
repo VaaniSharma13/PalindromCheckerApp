@@ -24,27 +24,21 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class PalindromeCheckerApp {
-    public static void main(String[] args) {
-        String input = "radar";
-        boolean result = checkPalindrome(input);
-        System.out.println(result);
+    public static boolean isPalindrome(String str, int start, int end) {
+        if (start >= end) {
+            return true;
+        }
+
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        return isPalindrome(str, start + 1, end - 1);
     }
 
-    public static boolean checkPalindrome(String str) {
-        if (str == null) return false;
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (int i = 0; i < str.length(); i++) {
-            deque.addLast(str.charAt(i));
-        }
-
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
+    public static void main(String[] args) {
+        String input = "racecar";
+        boolean result = isPalindrome(input, 0, input.length() - 1);
+        System.out.println(result);
     }
 }
