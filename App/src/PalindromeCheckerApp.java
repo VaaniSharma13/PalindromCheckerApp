@@ -20,30 +20,28 @@
  * @version 1.0
  */
 
+import java.util.Stack;
+
 public class PalindromeCheckerApp {
-    /**
-     *
-     * @vaani args Command-line arguments
-     */
     public static void main(String[] args) {
-        String input = "racecar";
-        boolean result = isSymmetric(input);
+        String input = "madam";
+        boolean result = isPalindrome(input);
         System.out.println(result);
     }
 
-    public static boolean isSymmetric(String str) {
+    public static boolean isPalindrome(String str) {
         if (str == null) return false;
 
-        char[] chars = str.toCharArray();
-        int left = 0;
-        int right = chars.length - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (left < right) {
-            if (chars[left] != chars[right]) {
+        for (int i = 0; i < str.length(); i++) {
+            stack.push(str.charAt(i));
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) != stack.pop()) {
                 return false;
             }
-            left++;
-            right--;
         }
 
         return true;
