@@ -25,22 +25,27 @@ public class PalindromeCheckerApp {
      *
      * @vaani args Command-line arguments
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        String input = "racecar";
+        boolean result = isSymmetric(input);
+        System.out.println(result);
+    }
 
+    public static boolean isSymmetric(String str) {
+        if (str == null) return false;
 
-        String word = "madam";
+        char[] chars = str.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
 
-        String reversed = "";
-
-        for (int i = word.length() - 1; i >= 0; i--) {
-            reversed = reversed + word.charAt(i);
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                return false;
+            }
+            left++;
+            right--;
         }
 
-        if (word.equals(reversed)) {
-            System.out.println(word + " is a palindrome.");
-        } else {
-            System.out.println(word + " is not a palindrome.");
-        }
-
+        return true;
     }
 }
