@@ -20,59 +20,22 @@
  * @version 1.0
  */
 
-class Node {
-    char data;
-    Node next;
-    Node(char data) { this.data = data; }
-}
-
 public class PalindromeCheckerApp {
+    public static boolean check(String str, int s, int e) {
+        if (s >= e) {
+            return true;
+        }
+        if (str.charAt(s) != str.charAt(e)) {
+            return false;
+        }
+        return check(str, s + 1, e - 1);
+    }
+
     public static void main(String[] args) {
-        String input = "radar";
-        Node head = createList(input);
-        System.out.println(isPalindrome(head));
+        String input = "A man, a plan, a canal: Panama";
+        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        boolean result = check(clean, 0, clean.length() - 1);
+        System.out.println(result);
     }
-
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) return true;
-
-        Node slow = head;
-        Node fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node secondHalf = reverse(slow);
-        Node firstHalf = head;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) return false;
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-        return true;
-    }
-
-    private static Node reverse(Node head) {
-        Node prev = null;
-        Node curr = head;
-        while (curr != null) {
-            Node next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-        return prev;
-    }
-
-    private static Node createList(String s) {
-        Node dummy = new Node(' ');
-        Node temp = dummy;
-        for (char c : s.toCharArray()) {
-            temp.next = new Node(c);
-            temp = temp.next;
-        }
-        return dummy.next;
-    }
-}
+}}
