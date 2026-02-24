@@ -20,35 +20,59 @@
  * @version 1.0
  */
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+class Node {
+    char data;
+    Node next;
+    Node(char data) { this.data = data; }
+}
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "level";
-        boolean result = compareStructures(input);
-        System.out.println(result);
+        String input = "radar";
+        Node head = createList(input);
+        System.out.println(isPalindrome(head));
     }
 
-    public static boolean compareStructures(String str) {
-        if (str == null) return false;
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null) return true;
 
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
-
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            stack.push(c);
-            queue.add(c);
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        while (!stack.isEmpty()) {
-            if (!stack.pop().equals(queue.remove())) {
-                return false;
-            }
-        }
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
 
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) return false;
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
         return true;
+    }
+
+    private static Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    private static Node createList(String s) {
+        Node dummy = new Node(' ');
+        Node temp = dummy;
+        for (char c : s.toCharArray()) {
+            temp.next = new Node(c);
+            temp = temp.next;
+        }
+        return dummy.next;
     }
 }
